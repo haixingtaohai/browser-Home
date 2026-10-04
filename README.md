@@ -1,4 +1,4 @@
-# Chrome-Home 浏览器主页
+# browser-Home 浏览器主页
 
 一个零依赖的浏览器起始页 / 新标签页导航，采用液态玻璃（毛玻璃）视觉风格，使用原生 HTML + CSS + JavaScript 实现，无需构建工具，双击即可运行。
 
