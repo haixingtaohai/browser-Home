@@ -48,7 +48,9 @@
 
   // ----- 常用网站数据（图标为 icons/ 目录下的 SVG 文件名，不带扩展名） -----
   // 颜色已写入各 SVG 文件本身，要改色直接编辑 icons/ 里对应的那个文件
-  // 模板：{ name: '', url: '', icon: '' },
+  // 模板：{ name: '', url: '', icon: '' }
+  // 可选 sub：悬停后弹出气泡里的子入口，如
+  //   sub: [{ name: '显示名', url: 'https://...' }]
   const SITES = [
     // 社交娱乐
     { name: '微信', url: 'https://weixin.qq.com/', icon: 'wechat' },
@@ -73,7 +75,11 @@
     { name: '藏宝阁', url: 'https://cbg.163.com/', icon: 'cbg' },
     // AI工具
     { name: 'ChatGPT', url: 'https://chat.openai.com', icon: 'chatgpt' },
-    { name: 'deepseek', url: 'https://www.deepseek.com', icon: 'deepseek' },
+    { name: 'deepseek', url: 'https://www.deepseek.com', icon: 'deepseek',
+      sub: [
+        { name: '网页对话', url: 'https://chat.deepseek.com/' },
+        { name: 'API 开放平台', url: 'https://platform.deepseek.com/usage' },
+      ] },
     { name: '豆包', url: 'https://www.doubao.com', icon: 'doubao' },
     { name: 'Gemini', url: 'https://gemini.google.com/', icon: 'gemini' },
     { name: 'Grok', url: 'https://grok.x.ai/', icon: 'grok' },
@@ -103,7 +109,11 @@
   const LAN_SITES = [
     { name: '路由后台', url: 'http://192.168.100.1', icon: 'lan-router' },
     { name: '光猫后台', url: 'http://192.168.1.1', icon: 'lan-modem' },
-    { name: '飞牛NAS', url: 'http://192.168.100.3', icon: 'lan-nas' },
+    { name: '飞牛NAS', url: 'http://192.168.100.3', icon: 'lan-nas',
+      sub: [
+        { name: '飞牛音乐', url: 'http://192.168.100.3:5666/music/login' },
+        { name: '飞牛相册', url: 'http://192.168.100.3:5666/p' },
+      ] },
   ];
 
   // ----- 获取DOM元素 -----
@@ -119,33 +129,75 @@
   // 当前选中的搜索引擎（初始化时由 setActiveEngine 设置）
   let currentEngine = 'bing';
 
+  // 生成一张卡片。带 sub 的会用 .link-wrap 包一层：
+  // 气泡里也是链接，而 <a> 不能嵌套 <a>，所以必须把气泡做成卡片的兄弟节点。
+  // 网址网格和局域网面板共用这一套，只是卡片的类名不同。
+  function buildTile(site, tileClass) {
+    const tile = `
+      <a href="${site.url}" class="glass-tile ${tileClass}">
+        <img class="svg-icon" src="icons/${site.icon}.svg" alt="">
+        <span class="site-name">${site.name}</span>
+      </a>
+    `;
+
+    if (!site.sub || !site.sub.length) return tile;
+
+    const links = site.sub.map(s => {
+      // 第二行显示主机名（带端口，局域网服务端口本身也是有用信息）
+      let host = s.url;
+      try { host = new URL(s.url).host.replace(/^www\./, ''); } catch (err) { /* 解析失败就原样显示 */ }
+      return `<a class="sub-link" href="${s.url}">
+                <span class="sub-link-name">${s.name}</span>
+                <span class="sub-link-url">${host}</span>
+              </a>`;
+    }).join('');
+
+    return `<div class="link-wrap">${tile}<div class="sub-bubble">${links}</div></div>`;
+  }
+
   // ----- 1. 渲染网址网格 -----
   function renderLinks() {
     let htmlStr = '';
-    SITES.forEach(site => {
-
-      // 图标：icons/ 下的 SVG 文件，用 <img> 引入（file:// 下 Chrome 会拦截 CSS mask）
-      htmlStr += `
-        <a href="${site.url}" class="glass-tile link-item">
-          <img class="svg-icon" src="icons/${site.icon}.svg" alt="">
-          <span class="site-name">${site.name}</span>
-        </a>
-      `;
-    });
+    SITES.forEach(site => { htmlStr += buildTile(site, 'link-item'); });
     linksGrid.innerHTML = htmlStr;
+  }
+
+  // ----- 1c. 悬停后弹出子入口气泡 -----
+  const SUB_OPEN_DELAY = 500;   // 悬停多久后弹出
+  const SUB_CLOSE_DELAY = 500;  // 移开后多久收起（留点容错，鼠标轻微偏移不会立刻关掉）
+
+  function bindSubBubbles() {
+    // 触摸设备没有真正的悬停（点一下会触发伪悬停且不好收起），直接不绑定
+    if (!window.matchMedia('(hover: hover)').matches) return;
+
+    document.querySelectorAll('.link-wrap').forEach(wrap => {
+      let openTimer = null;
+      let closeTimer = null;
+
+      // 两个计时器分开：弹出前移开会取消弹出，收起前移回去会取消收起
+      const open = (delay) => {
+        clearTimeout(closeTimer);
+        clearTimeout(openTimer);
+        openTimer = setTimeout(() => wrap.classList.add('show-sub'), delay);
+      };
+      const close = (delay) => {
+        clearTimeout(openTimer);
+        clearTimeout(closeTimer);
+        closeTimer = setTimeout(() => wrap.classList.remove('show-sub'), delay);
+      };
+
+      wrap.addEventListener('mouseenter', () => open(SUB_OPEN_DELAY));
+      wrap.addEventListener('mouseleave', () => close(SUB_CLOSE_DELAY));
+      // 键盘 Tab 到卡片：立即展开、移开立即收起（没有手抖问题，不必延时）
+      wrap.addEventListener('focusin', () => open(0));
+      wrap.addEventListener('focusout', () => close(0));
+    });
   }
 
   // ----- 1b. 渲染局域网链接面板 -----
   function renderLanLinks() {
     let htmlStr = '';
-    LAN_SITES.forEach(site => {
-      htmlStr += `
-        <a href="${site.url}" class="glass-tile lan-link-item">
-          <img class="svg-icon" src="icons/${site.icon}.svg" alt="">
-          <span class="site-name">${site.name}</span>
-        </a>
-      `;
-    });
+    LAN_SITES.forEach(site => { htmlStr += buildTile(site, 'lan-link-item'); });
     lanLinks.innerHTML = htmlStr;
   }
 
@@ -275,6 +327,7 @@
   // ----- 6. 初始化：渲染数据并恢复上次使用的搜索引擎 -----
   renderLinks();
   renderLanLinks();
+  bindSubBubbles();  // 必须在两个渲染之后，否则局域网面板里的气泡绑定不上
 
   // 优先读取上次选择，无记录（或该引擎已被删除）时回落到默认的必应
   let initialEngine = 'bing';

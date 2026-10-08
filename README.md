@@ -48,6 +48,8 @@
 
 每个卡片由一个 SVG 图标 + 名称组成，图标取 `icons/{icon}.svg`，用 `<img class="svg-icon">` 引入（`file://` 下 Chrome 会拦截 CSS mask 加载本地 SVG，因此不用 mask）。
 
+其中 **deepseek** 卡片带子入口，见下方「子入口气泡」。
+
 ### 局域网面板
 固定在左下角，内置 3 个内网入口：
 
@@ -56,6 +58,22 @@
 | 路由后台 | `http://192.168.100.1` |
 | 光猫后台 | `http://192.168.1.1` |
 | 飞牛NAS | `http://192.168.100.3` |
+
+飞牛NAS 带两个子入口（飞牛音乐、飞牛相册），悬停卡片即展开。
+
+### 子入口气泡（悬停展开）
+站点数据里带 `sub` 数组的卡片，鼠标悬停后会在卡片正上方弹出一个玻璃气泡，里面是该站点的子入口：
+
+| 卡片 | 子入口 |
+| --- | --- |
+| deepseek | 网页对话、API 开放平台 |
+| 飞牛NAS | 飞牛音乐、飞牛相册 |
+
+- 悬停 500ms 后展开，移开后 500ms 收起；两个计时器互相独立 —— 弹出前移开会取消弹出，收起前移回去会取消收起，鼠标轻微偏移不会立刻关掉。
+- 键盘 Tab 到卡片时立即展开、移开立即收起（没有手抖问题，所以不延时）。
+- 触摸设备不绑定该交互（`hover: none` 时直接跳过）：点按会触发收不掉的伪悬停，反而碍事；卡片本身的链接不受影响，照常可点。
+- 每条子入口显示"名称 + 主机名"两行，主机名由 `new URL(url).host` 解析并去掉开头的 `www.`，解析失败时原样显示 —— 所以局域网服务的端口（`:5666`）也能直接看到。
+- 子入口是纯文字的，不需要额外准备 SVG 图标。
 
 ## 文件结构
 
@@ -94,22 +112,33 @@ browser-Home/
 2. 编辑 [index_js.js](index_js.js) 中的 `SITES` 数组，按模板追加：
 
 ```js
+// 基础卡片
 { name: '名称', url: 'https://example.com', icon: 'example' },
+
+// 需要子入口时再加一个 sub（可选），悬停卡片后弹出气泡
+{ name: '名称', url: 'https://example.com', icon: 'example',
+  sub: [
+    { name: '子入口一', url: 'https://a.example.com' },
+    { name: '子入口二', url: 'https://b.example.com' },
+  ] },
 ```
 
 - `icon` 写 `icons/` 下的文件名（不带 `.svg` 扩展名）。
+- `sub` 里只写 `name` + `url`，不配图标。
+- 带 `sub` 的卡片会被 `.link-wrap` 多包一层，气泡是卡片的**兄弟节点**而不是子节点 —— HTML 里 `<a>` 不能嵌套 `<a>`，而气泡里的子入口本身也是链接。
 
 ### 添加搜索引擎
 编辑 `ENGINES` 对象新增条目（`name` / `url` / `icon` / `placeholder`），并在 [index.html](index.html) 的 `.engine-switcher` 中加一个对应 `data-engine` 的按钮（图标同样指向 `icons/` 下的 SVG）即可。
 
 ### 修改局域网入口
-编辑 `LAN_SITES` 数组，格式与 `SITES` 相同。
+编辑 `LAN_SITES` 数组，格式与 `SITES` 完全相同（同样支持 `sub`）。
 
 ## 视觉与性能细节
 
 - **液态玻璃**：`.glass-card` 半透明白底 + `backdrop-filter: blur(20px) saturate(180%)`；卡片与局域网按钮共用的 `.glass-tile` 使用多层渐变 + `blur(18px) saturate(200%)`，配合 `::before` 高光层与 `::after` 渐变描边（`mask-composite` 挖空成 1px 边框），hover 时上浮放大并增强高光。
 - **过渡优化**：只对真正变化的 `transform` / `border-color` / `box-shadow` 等属性做过渡，避免 `transition: all` 的开销。
 - **图标尺寸**：`.svg-icon` 统一 `1em × 1em`，跟随所在元素的 `font-size` 缩放，无需为每个图标单独写尺寸。
+- **子入口气泡**：`.sub-bubble` 绝对定位在卡片正上方（`bottom: calc(100% + 12px)`），半透明渐变底 + `backdrop-filter: blur(22px) saturate(190%) brightness(1.06)`，`::before` 做顶部镜面高光、`::after` 做指向卡片的尖角；默认 `opacity: 0` / `visibility: hidden`，加上 `.show-sub` 才淡入上浮，过渡 0.18s。网址网格与局域网面板共用同一套（`buildTile` 按类名区分卡片样式）。
 - **响应式**：
   - 主卡片 `max-width: 1100px`，网格为 `repeat(auto-fill, minmax(100px, 1fr))` 自适应列数；局域网面板 `position: fixed` 固定在左下角。
   - ≤ 600px：卡片与按钮尺寸收紧，网格固定 4 列，局域网面板贴边；同时缩小主卡片模糊、关闭小卡片与面板的 `backdrop-filter` 并改用高强度纯色背景，降低移动端模糊开销。
@@ -119,5 +148,6 @@ browser-Home/
 ## 浏览器要求
 
 - 需要支持 `backdrop-filter` 的现代浏览器（Chrome 76+、Edge 79+、Firefox 103+、Safari 9+），否则毛玻璃会退化为半透明背景，功能不受影响。
-- 需要支持 ES6（`const` / 箭头函数 / 模板字符串）与 `localStorage`；`localStorage` 在隐私模式下不可用时，引擎记忆功能自动降级为默认值，不影响其他功能。
+- 需要支持 ES6（`const` / 箭头函数 / 模板字符串 / `URL`）与 `localStorage`；`localStorage` 在隐私模式下不可用时，引擎记忆功能自动降级为默认值，不影响其他功能。
+- 子入口气泡依赖 `hover` / `pointer` 媒体查询：触摸设备不绑定悬停展开，桌面端才自动聚焦搜索框。
 - 全程无网络请求（除站点跳转本身），可完全离线使用。
