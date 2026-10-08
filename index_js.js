@@ -5,105 +5,105 @@
     google: {
       name: 'Google',
       url: 'https://www.google.com/search?q=',
-      icon: 'fab fa-google',
+      icon: 'google',
       placeholder: 'Google 搜索'
     },
     bing: {
       name: 'Bing',
       url: 'https://www.bing.com/search?q=',
-      icon: 'fab fa-microsoft',
+      icon: 'bing',
       placeholder: 'Bing 搜索'
     },
     baidu: {
       name: '百度',
       url: 'https://www.baidu.com/s?wd=',
-      icon: 'fa-solid fa-paw',
+      icon: 'baidu',
       placeholder: '百度搜索'
     },
     yandex: {
       name: 'Yandex',
       url: 'https://yandex.com/search/?text=',
-      icon: 'fab fa-yandex',
+      icon: 'yandex',
       placeholder: 'Yandex 搜索'
     },
     sogou: {
       name: '搜狗',
       url: 'https://www.sogou.com/web?query=',
-      icon: 'fa-solid fa-dog',
+      icon: 'sogou',
       placeholder: '搜狗搜索'
     },
     so360: {
       name: '360',
       url: 'https://www.so.com/s?q=',
-      icon: 'fa-solid fa-shield',
+      icon: 'so360',
       placeholder: '360搜索'
     },
     github: {
       name: 'GitHub',
       url: 'https://github.com/search?q=',
-      icon: 'fa-brands fa-github',
+      icon: 'github-engine',
       placeholder: 'GitHub 搜索'
     }
   };
 
-  // ----- 常用网站数据 (图标使用fontawesome 6 免费版) -----
-  // 模板：{ name: '', url: '', icon: '', color: ''},
+  // ----- 常用网站数据（图标为 icons/ 目录下的 SVG 文件名，不带扩展名） -----
+  // 颜色已写入各 SVG 文件本身，要改色直接编辑 icons/ 里对应的那个文件
+  // 模板：{ name: '', url: '', icon: '' },
   const SITES = [
     // 社交娱乐
-    { name: '微信', url: 'https://weixin.qq.com/', icon: 'fa-brands fa-weixin', color: '#07C160' },
-    { name: 'QQ', url: 'https://im.qq.com/', icon: 'fa-brands fa-qq', color: '#00A1D6' },
-    { name: '微博', url: 'https://weibo.com', icon: 'fab fa-weibo', color: '#e6162d' },
-    { name: '抖音', url: 'https://www.douyin.com', icon: 'fa-brands fa-tiktok', color: '#000000' },
-    { name: '快手', url: 'https://www.kuaishou.com/', icon: 'fa-solid fa-play-circle', color: '#FF2442' },
-    { name: 'bilibili', url: 'https://www.bilibili.com', icon: 'fa-brands fa-bilibili', color: '#fb7299' },
-    { name: 'X', url: 'https://x.com/', icon: 'fa-brands fa-x', color: '#000000'},
+    { name: '微信', url: 'https://weixin.qq.com/', icon: 'wechat' },
+    { name: 'QQ', url: 'https://im.qq.com/', icon: 'qq' },
+    { name: '微博', url: 'https://weibo.com', icon: 'weibo' },
+    { name: '抖音', url: 'https://www.douyin.com', icon: 'douyin' },
+    { name: '快手', url: 'https://www.kuaishou.com/', icon: 'kuaishou' },
+    { name: 'bilibili', url: 'https://www.bilibili.com', icon: 'bilibili' },
+    { name: 'X', url: 'https://x.com/', icon: 'x' },
     // 邮箱通讯
-    { name: '网易邮箱', url: 'https://mail.163.com/', icon: 'fa-solid fa-envelope', color: '#FF7D00'},
-    { name: 'QQ邮箱', url: 'https://mail.qq.com/', icon: 'fa-solid fa-envelope', color: '#00A1D6'},
+    { name: '网易邮箱', url: 'https://mail.163.com/', icon: 'mail163' },
+    { name: 'QQ邮箱', url: 'https://mail.qq.com/', icon: 'mailqq' },
     // 音乐
-    { name: '网易云音乐', url: 'https://music.163.com', icon: 'fa-solid fa-compact-disc', color: '#E60026' },
-    { name: 'QQ音乐', url: 'https://y.qq.com', icon: 'fa-solid fa-headphones', color: '#1ED760' },
-    { name: '酷狗音乐', url: 'https://kugou.com', icon: 'fa-solid fa-music', color: '#1E90FF' },
+    { name: '网易云音乐', url: 'https://music.163.com', icon: 'music163' },
+    { name: 'QQ音乐', url: 'https://y.qq.com', icon: 'qqmusic' },
+    { name: '酷狗音乐', url: 'https://kugou.com', icon: 'kugou' },
     // 购物
-    { name: '淘宝', url: 'https://www.taobao.com', icon: 'fa-solid fa-shopping-bag', color: '#FF4400' },
-    { name: '京东', url: 'https://www.jd.com', icon: 'fa-solid fa-store', color: '#E31D1A' },
-    { name: '拼多多', url: 'https://www.pinduoduo.com/', icon: 'fa-solid fa-gem', color: '#E02020'},
-    { name: '闲鱼', url: 'https://2.taobao.com/', icon: 'fa-solid fa-tag', color: '#7B7B7B'},
-    { name: '藏宝阁', url: 'https://cbg.163.com/', icon: 'fa-solid fa-box-open', color: '#E6A23C'},
+    { name: '淘宝', url: 'https://www.taobao.com', icon: 'taobao' },
+    { name: '京东', url: 'https://www.jd.com', icon: 'jd' },
+    { name: '拼多多', url: 'https://www.pinduoduo.com/', icon: 'pinduoduo' },
+    { name: '闲鱼', url: 'https://2.taobao.com/', icon: 'xianyu' },
+    { name: '藏宝阁', url: 'https://cbg.163.com/', icon: 'cbg' },
     // AI工具
-    { name: 'ChatGPT', url: 'https://chat.openai.com', icon: 'fa-solid fa-comments', color: '#10A37F' },
-    { name: 'deepseek', url: 'https://www.deepseek.com', icon: 'fa-solid fa-fish', color: '#1677FF'},
-    { name: '豆包', url: 'https://www.doubao.com', icon: 'fa-solid fa-robot', color: '#0066FF'},
-    { name: 'Gemini', url: 'https://gemini.google.com/', icon: 'fa-solid fa-wand-magic-sparkles', color: '#4285F4'},
-    { name: 'Grok', url: 'https://grok.x.ai/', icon: 'fa-solid fa-robot', color: '#000000'},
+    { name: 'ChatGPT', url: 'https://chat.openai.com', icon: 'chatgpt' },
+    { name: 'deepseek', url: 'https://www.deepseek.com', icon: 'deepseek' },
+    { name: '豆包', url: 'https://www.doubao.com', icon: 'doubao' },
+    { name: 'Gemini', url: 'https://gemini.google.com/', icon: 'gemini' },
+    { name: 'Grok', url: 'https://grok.x.ai/', icon: 'grok' },
     // 开发科技
-    { name: 'GitHub', url: 'https://github.com/', icon: 'fa-brands fa-github', color: '#171515'},
-    // 用字母 G 模拟 Gitee 官方图标
-    { name: 'Gitee', url: 'https://gitee.com/', icon: 'G', color: '#C71D23'},
-    { name: 'Apple', url: 'https://www.apple.com.cn', icon: 'fa-brands fa-apple', color: '#000000'},
-    { name: 'iCloud', url: 'https://www.icloud.com.cn', icon: 'fa-solid fa-cloud', color: '#007AFF'},
-    { name: '微软', url: 'https://www.microsoft.com/zh-cn', icon: 'fa-brands fa-microsoft', color: '#00A4EF'},
-    { name: '晨钟酱工具', url: 'https://jamcz.com/', icon: 'fa-brands fa-android', color: '#3DDC84'},
+    { name: 'GitHub', url: 'https://github.com/', icon: 'github' },
+    { name: 'Gitee', url: 'https://gitee.com/', icon: 'gitee' },
+    { name: 'Apple', url: 'https://www.apple.com.cn', icon: 'apple' },
+    { name: 'iCloud', url: 'https://www.icloud.com.cn', icon: 'icloud' },
+    { name: '微软', url: 'https://www.microsoft.com/zh-cn', icon: 'microsoft' },
+    { name: '晨钟酱工具', url: 'https://jamcz.com/', icon: 'jamcz' },
     // 游戏相关
-    { name: '苦力怕论坛', url: 'https://klpbbs.com/', icon: 'fa-solid fa-cube', color: '#D0C5C0'},
-    { name: '手柄检测', url: 'https://www.9slab.com/gamepad/home', icon: 'fa-solid fa-gamepad', color: '#E64A19'},
-    { name: '网易游戏充值助手', url: 'https://pay.ds.163.com/', icon: 'fa-solid fa-coins', color: '#FF7D00'},
-    { name: '极地游戏', url: 'https://jidiyouxi.com/', icon: 'fa-solid fa-gamepad', color: '#6366F1'},
+    { name: '苦力怕论坛', url: 'https://klpbbs.com/', icon: 'klpbbs' },
+    { name: '手柄检测', url: 'https://www.9slab.com/gamepad/home', icon: 'gamepad-check' },
+    { name: '网易游戏充值助手', url: 'https://pay.ds.163.com/', icon: 'netease-pay' },
+    { name: '极地游戏', url: 'https://jidiyouxi.com/', icon: 'jidiyouxi' },
     // 实用工具
-    { name: '高德地图', url: 'https://amap.com', icon: 'fa-solid fa-map-location-dot', color: '#00B4FF'},
-    { name: '蓝奏云', url: 'https://lanzou.com/', icon: 'fa-solid fa-cloud', color: '#4C78FC'},
-    { name: '毒蘑菇性能测试', url: 'https://toolwa.com/vsbm/', icon: 'fa-solid fa-microchip', color: '#4CAF50'},
-    { name: '噼咔', url: 'https://manhuapica.com/plogin/', icon: 'fa-solid fa-book-open-reader', color: '#F56C6C'},
-    { name: '思迅商云', url: 'https://saas.sixun.com.cn/Account/Login#/flowRpt/list', icon: 'fa-solid fa-cash-register', color: '#409EFF'},
+    { name: '高德地图', url: 'https://amap.com', icon: 'amap' },
+    { name: '蓝奏云', url: 'https://lanzou.com/', icon: 'lanzou' },
+    { name: '毒蘑菇性能测试', url: 'https://toolwa.com/vsbm/', icon: 'toolwa' },
+    { name: '噼咔', url: 'https://manhuapica.com/plogin/', icon: 'pica' },
+    { name: '思迅商云', url: 'https://saas.sixun.com.cn/Account/Login#/flowRpt/list', icon: 'sixun' },
     // 其他
-    { name: '旧导航', url: 'jiu.html', icon: 'fa-regular fa-compass', color: '#1677FF'},
+    { name: '旧导航', url: 'jiu.html', icon: 'jiu' },
   ];
 
   // ----- 局域网链接数据 -----
   const LAN_SITES = [
-    { name: '路由后台', url: 'http://192.168.100.1', icon: 'fa-solid fa-server', color: '#ff9900' },
-    { name: '光猫后台', url: 'http://192.168.1.1', icon: 'fa-solid fa-network-wired', color: '#409EFF'},
-    { name: '飞牛NAS', url: 'http://192.168.100.3', icon: 'fa-solid fa-server', color: '#1890FF'},
+    { name: '路由后台', url: 'http://192.168.100.1', icon: 'lan-router' },
+    { name: '光猫后台', url: 'http://192.168.1.1', icon: 'lan-modem' },
+    { name: '飞牛NAS', url: 'http://192.168.100.3', icon: 'lan-nas' },
   ];
 
   // ----- 获取DOM元素 -----
@@ -124,21 +124,10 @@
     let htmlStr = '';
     SITES.forEach(site => {
 
-      // 图标类名（如 "fa-brands fa-weixin"、"fab fa-weibo"）渲染 <i>，其余当文字图标处理
-      let iconContent = '';
-      if (/^fa[bsdrl]?[-\s]/.test(site.icon)) {
-
-        // 图标类名：渲染 <i> 标签，颜色通过 CSS 变量 --c 传入
-        iconContent = `<i class="${site.icon}" style="--c: ${site.color};"></i>`;
-      } else {
-
-        // 文字图标：渲染 .site-emoji，样式统一写在 CSS 里
-        iconContent = `<span class="site-emoji" style="--c: ${site.color};">${site.icon}</span>`;
-      }
-
+      // 图标：icons/ 下的 SVG 文件，用 <img> 引入（file:// 下 Chrome 会拦截 CSS mask）
       htmlStr += `
         <a href="${site.url}" class="glass-tile link-item">
-          ${iconContent}
+          <img class="svg-icon" src="icons/${site.icon}.svg" alt="">
           <span class="site-name">${site.name}</span>
         </a>
       `;
@@ -150,10 +139,9 @@
   function renderLanLinks() {
     let htmlStr = '';
     LAN_SITES.forEach(site => {
-      const iconContent = `<i class="${site.icon}" style="--c: ${site.color};"></i>`;
       htmlStr += `
         <a href="${site.url}" class="glass-tile lan-link-item">
-          ${iconContent}
+          <img class="svg-icon" src="icons/${site.icon}.svg" alt="">
           <span class="site-name">${site.name}</span>
         </a>
       `;

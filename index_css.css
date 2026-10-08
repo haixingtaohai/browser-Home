@@ -23,6 +23,28 @@
     padding: 1.5rem;
 }
 
+    /* ===== SVG 图标 =====
+       icons/ 目录下的 SVG 文件用 <img> 引入：本地直接双击打开网页时（file://），
+       Chrome 会拦截 CSS mask 去加载本地 SVG，图标会全部不显示。
+       颜色已写进各 SVG 文件本身，尺寸用 1em 跟随所在元素的 font-size。 */
+    .svg-icon {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      flex-shrink: 0;
+      vertical-align: -0.125em;
+      object-fit: contain;
+    }
+
+    /* 图标底衬 — 白色圆形，用在问候语、区块标题、局域网标题 */
+    .icon-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border-radius: 50%;
+    }
+
     /* 主卡片 — 毛玻璃质感 */
     .glass-card {
       max-width: 1100px;
@@ -58,13 +80,13 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     }
 
-    .greeting-left i {
-      font-size: 1.4rem;
-      color: #4f46e5;
-      background: white;
-      border-radius: 50%;
+    .greeting-left .icon-badge {
       padding: 0.4rem;
       box-shadow: 0 4px 8px -4px #a5b4fc;
+    }
+
+    .greeting-left .svg-icon {
+      font-size: 1.4rem;
     }
 
     .greeting-left span {
@@ -113,10 +135,9 @@
       box-shadow: 0 4px 10px -6px #2d3a5e;
     }
 
-    .engine-btn i {
+    .engine-btn .svg-icon {
       font-size: 1.2rem;
-      color: #4f46e5;
-      transition: color 0.2s;
+      transition: background-color 0.2s;
     }
 
     .engine-btn.active {
@@ -126,8 +147,9 @@
       box-shadow: 0 12px 18px -10px #312e81, 0 0 0 2px rgba(255,255,255,0.5) inset;
     }
 
-    .engine-btn.active i {
-      color: white;
+    /* 选中态是靛蓝底，图片图标没法改色，用滤镜把图标刷成纯白 */
+    .engine-btn.active .svg-icon {
+      filter: brightness(0) invert(1);
     }
 
     .engine-btn:hover:not(.active) {
@@ -193,7 +215,7 @@
       transform: scale(1.02) rotate(-2deg);
     }
 
-    .search-btn i {
+    .search-btn .svg-icon {
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     }
 
@@ -205,7 +227,8 @@
       margin-bottom: 1.8rem;
     }
 
-    .links-title span {
+    /* 只作用于文字标签，避免影响 .icon-badge / .svg-icon */
+    .links-title .links-title-text {
       font-weight: 600;
       font-size: 1.2rem;
       color: #1e1b4b;
@@ -216,13 +239,13 @@
       letter-spacing: 0.3px;
     }
 
-    .links-title i {
-      color: #4f46e5;
-      font-size: 1.5rem;
-      background: white;
-      border-radius: 50%;
+    .links-title .icon-badge {
       padding: 0.5rem;
       box-shadow: 0 6px 10px -4px #b1c3f5;
+    }
+
+    .links-title .svg-icon {
+      font-size: 1.5rem;
     }
 
     /* 网址网格 — 精致卡片 */
@@ -278,10 +301,7 @@
         inset 0 0 24px rgba(255, 255, 255, 0.45);
     }
 
-    /* 图标颜色由数据里注入的 CSS 变量 --c 控制 */
-    .glass-tile > i {
-      color: var(--c, #4f46e5);
-    }
+    /* 图标颜色已写入 icons/ 里各 SVG 文件本身 */
 
     /* 网址卡片 — 在通用外观上补充自己的尺寸与悬停位移 */
     .link-item {
@@ -294,17 +314,8 @@
       transform: translateY(-6px) scale(1.02);
     }
 
-    .link-item i {
+    .link-item .svg-icon {
       font-size: 2rem;
-      filter: drop-shadow(0 4px 4px rgba(99,102,241,0.2));
-    }
-
-    /* 文字型图标（icon 不是 Font Awesome 类名时使用） */
-    .link-item > .site-emoji {
-      font-size: 2rem;
-      line-height: 1; /* 与 Font Awesome 图标等高，避免把卡片撑高 */
-      font-weight: bold;
-      color: var(--c, #4f46e5);
       filter: drop-shadow(0 4px 4px rgba(99,102,241,0.2));
     }
 
@@ -351,9 +362,8 @@
     }
 
     /* 图标与文字置于高光层之上，保持清晰 */
-    .glass-tile > i,
-    .glass-tile > .site-name,
-    .glass-tile > .site-emoji {
+    .glass-tile > .svg-icon,
+    .glass-tile > .site-name {
       position: relative;
       z-index: 1;
     }
@@ -402,13 +412,13 @@
       color: #1e1b4b;
     }
 
-    .lan-panel .lan-title i {
-      color: #4f46e5;
-      font-size: 1rem;
-      background: white;
-      border-radius: 50%;
+    .lan-panel .lan-title .icon-badge {
       padding: 0.4rem;
       box-shadow: 0 4px 8px -4px #a5b4fc;
+    }
+
+    .lan-panel .lan-title .svg-icon {
+      font-size: 1rem;
     }
 
     .lan-panel .lan-links {
@@ -430,7 +440,7 @@
       transform: translateY(-3px) scale(1.03);
     }
 
-    .lan-panel .lan-link-item i {
+    .lan-panel .lan-link-item .svg-icon {
       font-size: 1.3rem;
     }
 
@@ -450,7 +460,7 @@
       .search-btn { width: 50px; height: 50px; font-size: 1.2rem; }
       .links-grid { grid-template-columns: repeat(4, 1fr); gap: 0.8rem; }
       .lan-panel .lan-link-item { padding: 0.4rem 0.7rem; min-width: 55px; }
-      .lan-panel .lan-link-item i { font-size: 1rem; }
+      .lan-panel .lan-link-item .svg-icon { font-size: 1rem; }
       .lan-panel .lan-link-item .site-name { font-size: 0.6rem; }
 
       /* 中小屏降低毛玻璃开销：缩小主卡片模糊，小卡片直接关闭背景模糊 */
