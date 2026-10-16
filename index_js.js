@@ -43,6 +43,14 @@
       url: 'https://github.com/search?q=',
       icon: 'github-engine',
       placeholder: 'GitHub 搜索'
+    },
+    douyin: {
+      name: '抖音',
+      // 抖音没有对外开放的搜索接口，官方规律是 /search/<关键词> 直接拼在路径里
+      url: 'https://www.douyin.com/search/',
+      icon: 'douyin-engine',
+      placeholder: '抖音搜索',
+      encode: false // 关键词按原文拼进路径，不能做 encodeURIComponent
     }
   };
 
@@ -97,6 +105,8 @@
     { name: '极地游戏', url: 'https://jidiyouxi.com/', icon: 'jidiyouxi' },
     // 实用工具
     { name: '高德地图', url: 'https://amap.com', icon: 'amap' },
+    { name: '百度地图', url: 'https://map.baidu.com/', icon: 'baidu-map' },
+    { name: '腾讯地图', url: 'https://map.qq.com/', icon: 'tencent-map' },
     { name: '蓝奏云', url: 'https://lanzou.com/', icon: 'lanzou' },
     { name: '毒蘑菇性能测试', url: 'https://toolwa.com/vsbm/', icon: 'toolwa' },
     { name: '噼咔', url: 'https://manhuapica.com/plogin/', icon: 'pica' },
@@ -270,8 +280,12 @@
     const directUrl = getDirectUrl(trimmed); // 判断是否网址/IP
     const engine = ENGINES[currentEngine];
     if (!engine) return;
+    // 多数引擎是 ?q=xxx 查询串，需要编码；抖音等把关键词拼在路径里，只能编码后拼
+    const keyword = engine.encode === false
+      ? encodeURI(trimmed)
+      : encodeURIComponent(trimmed);
     // 用 href 而非 replace：保留历史记录，从结果页按返回可回到主页
-    window.location.href = directUrl || engine.url + encodeURIComponent(trimmed);
+    window.location.href = directUrl || engine.url + keyword;
   }
 
   searchForm.addEventListener('submit', (e) => {

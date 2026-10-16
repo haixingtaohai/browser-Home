@@ -1,1 +1,17 @@
-<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="r"><rect width="24" height="24" rx="5.5"/></clipPath></defs><g clip-path="url(#r)"><rect width="24" height="24" fill="#00B4FF"/><g transform="translate(4.2,4.2) scale(0.65)"><path fill="#ffffff" d="M12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5M12,2A7,7 0 0,1 19,9C19,14.25 12,22 12,22C12,22 5,14.25 5,9A7,7 0 0,1 12,2M12,4A5,5 0 0,0 7,9C7,10 7,12 12,18.71C17,12 17,10 17,9A5,5 0 0,0 12,4Z" /></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="50" height="50" role="img" aria-label="高德地图 Amap">
+  <title>高德地图 Amap 图标</title>
+  <defs>
+    <clipPath id="planeClip"><polygon points="43.22,6.61 37.71,8.95 3.7,26.2 15.86,32.86 19.05,42.03 22.95,37.08 35.09,44.33 35.93,42.07"/></clipPath>
+  </defs>
+
+  <!-- 圆角底 + 四宫格（白色十字分隔） -->
+  <rect width="50" height="50" rx="12.19" fill="#FFFFFF"/>
+  <path fill="#C4DB9B" d="M12.19,0H19.22V31.35H0V12.19A12.19,12.19 0 0 1 12.19,0Z"/>
+  <path fill="#EAEFF0" d="M24.54,0H37.81A12.19,12.19 0 0 1 50,12.19V31.35H24.54Z"/>
+  <path fill="#EAEFF0" d="M0,35.37H19.22V50H12.19A12.19,12.19 0 0 1 0,37.81Z"/>
+  <path fill="#91D3EB" d="M24.54,35.37H50V37.81A12.19,12.19 0 0 1 37.81,50H24.54Z"/>
+
+  <!-- 纸飞机 -->
+  <polygon fill="#367ABE" points="43.22,6.61 37.71,8.95 3.7,26.2 15.86,32.86 19.05,42.03 22.95,37.08 35.09,44.33 35.93,42.07"/>
+  <polygon fill="#365BA7" clip-path="url(#planeClip)" points="33.99,15.95 16.34,33.42 20.09,41.06 23.77,37.21 20.49,35.18 34.56,17.16 34.14,15.65"/>
+</svg>

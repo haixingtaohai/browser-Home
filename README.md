@@ -10,7 +10,7 @@
 - 页面切到后台时停表省电，回到前台立即校正时间。
 
 ### 搜索引擎切换
-- 内置 7 个搜索引擎，点击胶囊按钮即切换，并同步更新搜索框占位提示。
+- 内置 8 个搜索引擎，点击胶囊按钮即切换，并同步更新搜索框占位提示。
 
 | 键名 | 名称 | 搜索地址 |
 | --- | --- | --- |
@@ -20,8 +20,10 @@
 | `yandex` | Yandex | `https://yandex.com/search/?text=` |
 | `sogou` | 搜狗 | `https://www.sogou.com/web?query=` |
 | `so360` | 360 | `https://www.so.com/s?q=` |
+| `douyin` | 抖音 | `https://www.douyin.com/search/` |
 | `github` | GitHub | `https://github.com/search?q=` |
 
+- 抖音没有对外开放的搜索接口，官方规律是关键词直接拼在 `/search/` 路径里，因此该引擎配置了 `encode: false`，提交时用 `encodeURI` 而非 `encodeURIComponent` 编码（其余引擎均使用查询串 `?q=`，走 `encodeURIComponent`）。
 - 选择会写入 `localStorage`（键名 `homepage-engine`），刷新后自动恢复；无记录或该引擎已删除时回落到默认的 Bing。
 
 ### 智能搜索框
@@ -34,7 +36,7 @@
 - 其余内容 → 走当前搜索引擎。搜索时使用 `location.href` 跳转，保留历史记录，可从结果页返回主页。
 
 ### 快捷导航网格
-由 `SITES` 数组动态渲染（38 个站点），按用途分组：
+由 `SITES` 数组动态渲染（40 个站点），按用途分组：
 
 - 社交娱乐：微信、QQ、微博、抖音、快手、bilibili、X
 - 邮箱通讯：网易邮箱、QQ 邮箱
@@ -43,7 +45,7 @@
 - AI 工具：ChatGPT、deepseek、豆包、Gemini、Grok
 - 开发科技：GitHub、Gitee、Apple、iCloud、微软、晨钟酱工具
 - 游戏相关：苦力怕论坛、手柄检测、网易游戏充值助手、极地游戏
-- 实用工具：高德地图、蓝奏云、毒蘑菇性能测试、噼咔、思迅商云
+- 实用工具：高德地图、百度地图、腾讯地图、蓝奏云、毒蘑菇性能测试、噼咔、思迅商云
 - 其他：旧导航
 
 每个卡片由一个 SVG 图标 + 名称组成，图标取 `icons/{icon}.svg`，用 `<img class="svg-icon">` 引入（`file://` 下 Chrome 会拦截 CSS mask 加载本地 SVG，因此不用 mask）。
@@ -82,7 +84,7 @@ browser-Home/
 ├── index.html      # 页面骨架：问候区、引擎切换、搜索框、导航网格、局域网面板
 ├── index_css.css   # 全部样式：毛玻璃卡片、网格布局、响应式与性能降级
 ├── index_js.js     # 全部逻辑：引擎配置、站点数据、搜索/时钟/渲染（IIFE，无依赖）
-├── icons/          # 53 个 SVG 图标：站点图标 + 界面图标（ui-*，含搜索引擎图标）
+├── icons/          # 56 个 SVG 图标：站点图标 + 界面图标（ui-*，含搜索引擎图标）
 └── README.md
 ```
 
@@ -128,7 +130,7 @@ browser-Home/
 - 带 `sub` 的卡片会被 `.link-wrap` 多包一层，气泡是卡片的**兄弟节点**而不是子节点 —— HTML 里 `<a>` 不能嵌套 `<a>`，而气泡里的子入口本身也是链接。
 
 ### 添加搜索引擎
-编辑 `ENGINES` 对象新增条目（`name` / `url` / `icon` / `placeholder`），并在 [index.html](index.html) 的 `.engine-switcher` 中加一个对应 `data-engine` 的按钮（图标同样指向 `icons/` 下的 SVG）即可。
+编辑 `ENGINES` 对象新增条目（`name` / `url` / `icon` / `placeholder`，可选 `encode`），并在 [index.html](index.html) 的 `.engine-switcher` 中加一个对应 `data-engine` 的按钮（图标同样指向 `icons/` 下的 SVG）即可。`encode` 默认按 `encodeURIComponent` 编码关键词，像抖音这类把关键词拼进路径的引擎需设为 `false`（改用 `encodeURI`）。
 
 ### 修改局域网入口
 编辑 `LAN_SITES` 数组，格式与 `SITES` 完全相同（同样支持 `sub`）。
