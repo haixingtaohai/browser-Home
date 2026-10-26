@@ -8,8 +8,37 @@
   <link rel="icon" href="index-imgs/yjs.ico">
   <!-- 页面样式（外部 CSS） -->
   <link rel="stylesheet" href="index_css.css">
+  <!-- 禁用 JS 时不显示开屏层，避免遮住页面 -->
+  <noscript><style>.boot-splash{display:none!important}</style></noscript>
 </head>
 <body>
+  <!-- 开屏动画（方案 A：罗盘启航），结束后由脚本移除 -->
+  <div class="boot-splash" id="bootSplash" aria-hidden="true">
+    <svg width="0" height="0" style="position:absolute">
+      <defs>
+        <linearGradient id="bootRingGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#a5b4fc"/>
+          <stop offset=".55" stop-color="#4f46e5"/>
+          <stop offset="1" stop-color="#818cf8"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="boot-core">
+      <div class="boot-halo"></div>
+      <svg class="boot-ring" viewBox="0 0 128 128">
+        <circle cx="64" cy="64" r="64"/>
+      </svg>
+      <div class="boot-orb">
+        <img src="icons/ui-compass.svg" alt="">
+        <span class="boot-sheen"></span>
+      </div>
+    </div>
+    <div class="boot-word">
+      <div class="boot-name">凌ling妻</div>
+      <div class="boot-sub">探索 · 从这里开始</div>
+    </div>
+  </div>
+
   <div class="glass-card">
     <!-- 问候 + 实时时钟 -->
     <div class="greeting-section">

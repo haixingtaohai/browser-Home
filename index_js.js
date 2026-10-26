@@ -356,3 +356,28 @@
     searchInput.focus();
   }
 })();
+
+// ----- 7. 开屏动画（方案 A：罗盘启航，一次性播放） -----
+(function () {
+  const splash = document.getElementById('bootSplash');
+  if (!splash) return;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const INTRO_MS = reduceMotion ? 120 : 925;   // 动画主体播完、开始淡出的时间点
+  const PAGE_IN_MS = reduceMotion ? 60 : 475;  // 主页入场动画时长
+  const REMOVE_MS = reduceMotion ? 260 : 420;  // 淡出结束后移除开屏层
+
+  // 连续两帧后再加播放态，确保 CSS 动画从第一帧开始
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => splash.classList.add('is-playing'));
+  });
+
+  setTimeout(() => {
+    splash.classList.add('is-hidden');
+    document.body.classList.add('boot-reveal');
+
+    setTimeout(() => document.body.classList.remove('boot-reveal'), PAGE_IN_MS);
+    // 移除节点，避免透明层继续参与合成或拦截事件
+    setTimeout(() => splash.remove(), REMOVE_MS);
+  }, INTRO_MS);
+})();

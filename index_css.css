@@ -605,3 +605,222 @@
     @media (max-width: 400px) {
       .links-grid { grid-template-columns: repeat(3, 1fr); }
     }
+
+    /* ===== 开屏动画 A：罗盘启航 =====
+       纯白背景，一次性播放，脚本在结束后移除节点，不影响页面其余样式 */
+    .boot-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #fff;
+      transition: opacity 0.36s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .boot-splash.is-hidden {
+      opacity: 0;
+      transform: scale(1.05);
+      pointer-events: none;
+    }
+
+    .boot-core {
+      position: relative;
+      width: 10.5rem;
+      height: 10.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .boot-halo {
+      position: absolute;
+      inset: -30%;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+        rgba(79, 70, 229, 0.28),
+        rgba(129, 140, 248, 0.12) 45%,
+        rgba(255, 255, 255, 0) 70%);
+      transform: scale(0.4);
+      opacity: 0;
+    }
+
+    .boot-ring {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      transform: rotate(-90deg);
+    }
+
+    .boot-ring circle {
+      fill: none;
+      stroke: url(#bootRingGrad);
+      stroke-width: 2;
+      stroke-dasharray: 402.1;
+      stroke-dashoffset: 402.1;
+      stroke-linecap: round;
+    }
+
+    .boot-orb {
+      position: relative;
+      width: 7rem;
+      height: 7rem;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg,
+        rgba(255, 255, 255, 0.95),
+        rgba(255, 255, 255, 0.55) 48%,
+        rgba(255, 255, 255, 0.3));
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 26px 46px -18px rgba(49, 46, 129, 0.5),
+                  inset 0 1px 2px #fff,
+                  inset 0 -8px 16px -10px #c7d2fe;
+      transform: scale(0.55);
+      opacity: 0;
+    }
+
+    .boot-orb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(ellipse at 32% 14%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 58%);
+      pointer-events: none;
+    }
+
+    .boot-orb img {
+      width: 3.3rem;
+      height: 3.3rem;
+      position: relative;
+      z-index: 1;
+      transform: rotate(-150deg);
+      filter: drop-shadow(0 6px 10px rgba(79, 70, 229, 0.3));
+    }
+
+    /* 镜面高光扫过球体 */
+    .boot-sheen {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      overflow: hidden;
+      opacity: 0;
+      background: linear-gradient(72deg,
+        transparent 34%,
+        rgba(255, 255, 255, 0.95) 48%,
+        transparent 62%);
+    }
+
+    .boot-word {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .boot-name {
+      font-size: 1.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #1e1b4b;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    .boot-sub {
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.32em;
+      color: #64748b;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    /* 播放态：罗盘就位、光环扫过、镜面掠过、文字浮现 */
+    .boot-splash.is-playing .boot-halo {
+      animation: bootHalo 0.57s cubic-bezier(0.23, 1, 0.32, 1) 0.05s forwards;
+    }
+    .boot-splash.is-playing .boot-ring circle {
+      animation: bootRingSweep 0.52s cubic-bezier(0.4, 0, 0.2, 1) 0.06s forwards;
+    }
+    .boot-splash.is-playing .boot-orb {
+      animation: bootOrbIn 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0.02s forwards;
+    }
+    .boot-splash.is-playing .boot-orb img {
+      animation: bootNeedle 0.52s cubic-bezier(0.23, 1, 0.32, 1) 0.09s forwards;
+    }
+    .boot-splash.is-playing .boot-sheen {
+      animation: bootSheen 0.47s cubic-bezier(0.4, 0, 0.2, 1) 0.39s forwards;
+    }
+    .boot-splash.is-playing .boot-name {
+      animation: bootWordIn 0.35s cubic-bezier(0.23, 1, 0.32, 1) 0.31s forwards;
+    }
+    .boot-splash.is-playing .boot-sub {
+      animation: bootWordIn 0.35s cubic-bezier(0.23, 1, 0.32, 1) 0.4s forwards;
+    }
+
+    /* 开屏层淡出时，主页轻轻上浮入场 */
+    .boot-reveal .glass-card,
+    .boot-reveal .lan-panel {
+      animation: bootPageIn 0.45s cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+
+    @keyframes bootHalo {
+      0% { opacity: 0; transform: scale(0.4); }
+      60% { opacity: 0.9; }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes bootRingSweep {
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes bootOrbIn {
+      0% { opacity: 0; transform: scale(0.55); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes bootNeedle {
+      0% { transform: rotate(-150deg); }
+      58% { transform: rotate(16deg); }
+      82% { transform: rotate(-4deg); }
+      100% { transform: rotate(0); }
+    }
+
+    @keyframes bootSheen {
+      0% { opacity: 0; transform: translateX(-130%) rotate(8deg); }
+      22% { opacity: 1; }
+      100% { opacity: 0; transform: translateX(130%) rotate(8deg); }
+    }
+
+    @keyframes bootWordIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bootPageIn {
+      from { opacity: 0; transform: scale(0.972) translateY(16px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* 减弱动态效果：动画瞬时完成，开屏层更快退场（脚本同步缩短等待） */
+    @media (prefers-reduced-motion: reduce) {
+      .boot-splash {
+        transition-duration: 0.2s;
+      }
+      .boot-splash * {
+        animation-duration: 0.01s !important;
+        animation-delay: 0s !important;
+      }
+    }
